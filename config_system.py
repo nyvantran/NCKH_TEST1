@@ -2,7 +2,7 @@
 # video đặt đường link
 # webcam đặt ID
 CAMERA_ID_1 = r"D:\Project\NCKH\dataset\test.mp4"  # video
-CAMERA_ID_2 = r"D:\Project\NCKH\dataset\test.mp4"   # video
+CAMERA_ID_2 = r"0"   # video
 CAMERA_ID_3 = "0"  # webcam
 CAMERA_ID_4 = ""
 
