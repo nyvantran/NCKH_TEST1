@@ -8,7 +8,7 @@
       "recording_path": "./recordings",
       "confidence_threshold": 0.4,
       "social_distance_threshold": 2,
-      "warning_duration": 0.5,
+      "warning_duration": 1,
       "loop_video": true
     },
     {
@@ -19,7 +19,7 @@
       "recording_path": "./recordings",
       "confidence_threshold": 0.4,
       "social_distance_threshold": 2,
-      "warning_duration": 0.5,
+      "warning_duration": 1,
       "loop_video": true
     },
     {
@@ -30,7 +30,7 @@
       "recording_path": "./recordings",
       "confidence_threshold": 0.4,
       "social_distance_threshold": 2,
-      "warning_duration": 0.5,
+      "warning_duration": 1,
       "loop_video": false
     }
   ]

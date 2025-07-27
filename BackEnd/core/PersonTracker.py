@@ -25,6 +25,7 @@ class Track:
         self.disappeared = 0
         self.trail.append(detection['center'])
 
+
 class PersonTracker:
 
     def __init__(self, camera_id: str, config: CameraConfig):
@@ -37,7 +38,7 @@ class PersonTracker:
         self.SOCIAL_DISTANCE_THRESHOLD = config.social_distance_threshold
         self.WARNING_DURATION = config.warning_duration
         self.bev_distance = BirdEyeViewTransform()
-        self.bev_distance.load_config_BEV(f"config_BEV_{self.camera_id}.json")
+        self.bev_distance.load_config_BEV(f"config/config_BEV_{camera_id}.json")
         self.frame_count = 0
         self.current_fps = 30
         self.distance_history = defaultdict(lambda: deque(maxlen=int(self.current_fps * self.WARNING_DURATION * 1.5)))
@@ -96,7 +97,6 @@ class PersonTracker:
             cv2.rectangle(frame, (x1, y1), (x2, y2), color, 2)
             label = f'ID: {tid}'
             cv2.putText(frame, label, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.7, color, 2)
-
         # Monitor and draw violation lines
         active_track_list = list(active_tracks.items())
         for i in range(len(active_track_list)):
@@ -115,7 +115,7 @@ class PersonTracker:
                         close_time = close_frames / self.current_fps
                         if close_time >= self.WARNING_DURATION and pair_key not in self.warned_pairs:
                             self.warned_pairs.add(pair_key)
-                            newly_warned_pairs_data.append((id1, id2, distance))
+                            newly_warned_pairs_data.append((id1, id2, distance, close_time))
                 else:
                     self.warned_pairs.discard(pair_key)
 

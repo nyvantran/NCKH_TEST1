@@ -14,7 +14,7 @@ from BackEnd.common.DataClass import CameraConfig
 class MultiCameraSurveillanceSystem(QObject):
     # Tín hiệu để gửi dữ liệu đến GUI một cách an toàn
     new_frame_ready = pyqtSignal(str, np.ndarray)
-    violation_detected = pyqtSignal(str, int, int, float, str)
+    violation_detected = pyqtSignal(str, int, int, float, str, float)
     system_stopped = pyqtSignal()
 
     def __init__(self, config_file: str = "cameras.json", batch_size: int = 8):
@@ -71,9 +71,9 @@ class MultiCameraSurveillanceSystem(QObject):
                         if frame is not None:
                             result = worker.process_detections(detections, frame)
                             self.new_frame_ready.emit(camera_id, result.frame)
-                            for id1, id2, distance in result.close_pairs:
+                            for id1, id2, distance, closetime in result.close_pairs:
                                 timestamp_str = datetime.now().strftime("%H:%M:%S")
-                                self.violation_detected.emit(camera_id, id1, id2, distance, timestamp_str)
+                                self.violation_detected.emit(camera_id, id1, id2, distance, timestamp_str, closetime)
             except Exception as e:
                 self.logger.error(f"Error processing batch results: {e}", exc_info=True)
                 time.sleep(0.01)
