@@ -5,7 +5,8 @@ from collections import defaultdict, deque
 from scipy.optimize import linear_sum_assignment
 from BackEnd.core.BirdEyeViewTransform import BirdEyeViewTransform
 from BackEnd.common.DataClass import CameraConfig
-
+from BackEnd.data import DatabaseManager
+import time
 
 class Track:
     def __init__(self, track_id, detection):
@@ -37,7 +38,8 @@ class PersonTracker:
         self.SOCIAL_DISTANCE_THRESHOLD = config.social_distance_threshold
         self.WARNING_DURATION = config.warning_duration
         self.bev_distance = BirdEyeViewTransform()
-        self.bev_distance.load_config_BEV(f"config_BEV_{self.camera_id}.json")
+        self.bev_distance.load_config_BEV(f"D:\WorkSpace\\model clone\\NCKH_TEST1\\config\\config_BEV_{self.camera_id}.json")
+        
         self.frame_count = 0
         self.current_fps = 30
         self.distance_history = defaultdict(lambda: deque(maxlen=int(self.current_fps * self.WARNING_DURATION * 1.5)))
@@ -49,7 +51,15 @@ class PersonTracker:
         xy_leg1 = (center1[0], center1[1] + height1 / 2)
         xy_leg2 = (center2[0], center2[1] + height2 / 2)
         return self.bev_distance.calculate_distance(xy_leg1, xy_leg2)
-
+    
+    def get_statistics(self):
+        """Get current statistics"""
+        active_tracks = sum(1 for track in self.tracks.values() if track.disappeared == 0)
+        return {
+            'active_tracks': active_tracks,
+            'total_tracks': len(self.tracks),
+            'violations': len(self.warned_pairs)
+        }
     def update_tracks(self, detections):
         active_track_ids = list(self.tracks.keys())
         if not detections:
@@ -116,6 +126,7 @@ class PersonTracker:
                         if close_time >= self.WARNING_DURATION and pair_key not in self.warned_pairs:
                             self.warned_pairs.add(pair_key)
                             newly_warned_pairs_data.append((id1, id2, distance))
+                            
                 else:
                     self.warned_pairs.discard(pair_key)
 
