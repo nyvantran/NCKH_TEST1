@@ -33,8 +33,6 @@ class DatabaseManager:
                            INTEGER,
                            person_id2
                            INTEGER,
-                           distance
-                           REAL,
                            description
                            TEXT
                        )
@@ -86,16 +84,16 @@ class DatabaseManager:
         conn.close()
 
     def log_event(self, camera_id: str, event_type: str, person_id1: int,
-                  person_id2: int = None, distance: float = None, description: str = ""):
+                  person_id2: int = None, description: str = ""):
         """Ghi lại sự kiện"""
         conn = sqlite3.connect(self.db_path)
         cursor = conn.cursor()
 
         cursor.execute('''
-                       INSERT INTO events (camera_id, event_type, timestamp, person_id1, person_id2, distance,
+                       INSERT INTO events (camera_id, event_type, timestamp, person_id1, person_id2,
                                            description)
-                       VALUES (?, ?, ?, ?, ?, ?, ?)
-                       ''', (camera_id, event_type, time.time(), person_id1, person_id2, distance, description))
+                       VALUES (?, ?, ?, ?, ?, ?)
+                       ''', (camera_id, event_type, time.time(), person_id1, person_id2, description))
 
         conn.commit()
         conn.close()
