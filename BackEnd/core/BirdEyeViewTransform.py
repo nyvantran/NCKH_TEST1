@@ -119,6 +119,7 @@ class BirdEyeViewTransform:
                 self.target_size = tuple(config['target_size'])
                 self.target_corners = np.float32(config['target_corners']) if config['target_corners'] else None
                 self.__hography_matrix = np.float32(config['hography_matrix'])
+                print(f"loaded file {filename} configuration")
         except FileNotFoundError:
             print(f"Không tìm thấy file cấu hình: {filename}")
 

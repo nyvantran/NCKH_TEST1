@@ -101,10 +101,10 @@ class SurveillanceGUI(QMainWindow):
         right_panel = QWidget()
         right_layout = QVBoxLayout(right_panel)
 
-        right_layout.addWidget(QLabel("<h2>Nhật ký Vi phạm</h2>"))
+        right_layout.addWidget(QLabel("<h2>Nhật ký Tiếp xúc</h2>"))
         self.log_table = QTableWidget()
-        self.log_table.setColumnCount(5)
-        self.log_table.setHorizontalHeaderLabels(["Thời gian", "Camera", "ID 1", "ID 2", "Khoảng cách (m)"])
+        self.log_table.setColumnCount(6)
+        self.log_table.setHorizontalHeaderLabels(["Thời gian", "Camera", "ID 1", "ID 2", "Khoảng cách (m)", "TGTX"])
         self.log_table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
         self.log_table.horizontalHeader().setSectionResizeMode(4, QHeaderView.Stretch)
         self.log_table.setEditTriggers(QTableWidget.NoEditTriggers)
@@ -140,7 +140,7 @@ class SurveillanceGUI(QMainWindow):
             except Exception as e:
                 print(f"Error updating feed for {camera_id}: {e}")
 
-    def add_violation_log(self, camera_id, id1, id2, distance, timestamp):
+    def add_violation_log(self, camera_id, id1, id2, distance, timestamp, timeclose=1):
         row_position = 0
         self.log_table.insertRow(row_position)
         self.log_table.setItem(row_position, 0, QTableWidgetItem(timestamp))
@@ -148,6 +148,8 @@ class SurveillanceGUI(QMainWindow):
         self.log_table.setItem(row_position, 2, QTableWidgetItem(str(id1)))
         self.log_table.setItem(row_position, 3, QTableWidgetItem(str(id2)))
         self.log_table.setItem(row_position, 4, QTableWidgetItem(f"{distance:.2f}"))
+        self.log_table.setItem(row_position, 5, QTableWidgetItem(f"{timeclose:.2f}s"))
+
         for i in range(5):
             self.log_table.item(row_position, i).setBackground(QColor(255, 100, 100, 100))
 
@@ -206,5 +208,3 @@ def main():
     main_window = SurveillanceGUI(config_file="config/cameras.json")
     main_window.show()
     sys.exit(app.exec_())
-
-
