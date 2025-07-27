@@ -27,7 +27,6 @@ class DetectionResult:
     close_pairs: List[Tuple[int, int, float]]
     frame: np.ndarray = None
 
-
 @dataclass
 class CameraConfig:
     camera_id: str

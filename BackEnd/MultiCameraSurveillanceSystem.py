@@ -63,7 +63,7 @@ class MultiCameraSurveillanceSystem(QObject):
                 if batch_result is None:
                     time.sleep(0.005)
                     continue
-
+                
                 for camera_id, detections in batch_result.camera_results.items():
                     worker = self.camera_workers.get(camera_id)
                     if worker and worker.is_active:

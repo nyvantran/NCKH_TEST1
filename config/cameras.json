@@ -2,7 +2,7 @@
   "cameras": [
     {
       "camera_id": "CAM001",
-      "source": "D:\\Project\\NCKH\\dataset\\test.mp4",
+      "source": "D:\\WorkSpace\\PersonPath\\uid_vid_00035.mp4",
       "position": "Position_1",
       "enable_recording": true,
       "recording_path": "./recordings",
@@ -13,7 +13,7 @@
     },
     {
       "camera_id": "CAM002",
-      "source": "D:\\Project\\NCKH\\dataset\\test.mp4",
+      "source": "0",
       "position": "Position_2",
       "enable_recording": true,
       "recording_path": "./recordings",
@@ -21,17 +21,7 @@
       "social_distance_threshold": 2,
       "warning_duration": 1,
       "loop_video": true
-    },
-    {
-      "camera_id": "CAM003",
-      "source": "0",
-      "position": "Position_3",
-      "enable_recording": true,
-      "recording_path": "./recordings",
-      "confidence_threshold": 0.4,
-      "social_distance_threshold": 2,
-      "warning_duration": 1,
-      "loop_video": false
+
     }
   ]
 }

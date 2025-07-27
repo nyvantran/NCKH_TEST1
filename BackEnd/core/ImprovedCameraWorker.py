@@ -8,8 +8,8 @@ from BackEnd.core.BatchProcessor import BatchProcessor
 from BackEnd.data.DatabaseManager import DatabaseManager
 from BackEnd.core.PersonTracker import PersonTracker
 from BackEnd.common.DataClass import CameraConfig, DetectionResult
-
-
+from datetime import datetime
+import os
 class ImprovedCameraWorker(threading.Thread):
     def __init__(self, config: CameraConfig, batch_processor: BatchProcessor, db_manager: DatabaseManager):
         super().__init__()
@@ -25,7 +25,7 @@ class ImprovedCameraWorker(threading.Thread):
         self.latest_frame_lock = threading.Lock()
         self.is_active = True
         self.is_video_file = isinstance(config.source, str) and not config.source.isdigit()
-
+        
     def run(self):
         self.running = True
         self.logger.info(f"Starting camera {self.config.camera_id}")
@@ -54,7 +54,7 @@ class ImprovedCameraWorker(threading.Thread):
             metadata = {'frame_id': self.frame_count, 'timestamp': time.time(),
                         'confidence_threshold': self.config.confidence_threshold}
             self.batch_processor.add_frame(self.config.camera_id, frame, metadata)
-            time.sleep(1 / 35)  # Giới hạn FPS
+            time.sleep(1 / 30)  # Giới hạn FPS
         self.cleanup()
 
     def _open_video_source(self):
@@ -85,6 +85,30 @@ class ImprovedCameraWorker(threading.Thread):
             close_pairs=newly_warned_pairs,
             frame=frame
         )
+        
+        if self.frame_count % 300 == 0:
+            stats = self.tracker.get_statistics()
+            self.db_manager.log_statistics(
+                self.config.camera_id,
+                stats['total_tracks'], # Tổng số lượng track theo dõi
+                stats['active_tracks'], # Số lượng track tại khung hình hiện tại phát hiện được
+                stats['violations'] # Số lượng cặp đối tượng vi phạm khoảng cách
+            )
+            file_name = datetime.now().strftime("%d-%m-%Y %H-%M-%S" + ".jpg")
+            # Lưu khung hình hiện tại (frame) vào biến image
+            if self.tracker.warned_pair:
+                for (id1, id2) in self.tracker.warned_pairs:
+                    self.db_manager.log_event(self.config.camera_id, "violation", id1, id2, file_name)
+                    
+                save_dir = "D:\\WorkSpace\\model clone\\NCKH_TEST1\\capture"
+                if save_dir:
+                    os.makedirs(save_dir, exist_ok=True)
+                    save_path = os.path.join(save_dir, file_name)
+                    try:
+                        cv2.imwrite(save_path, frame)
+                    except Exception as e:
+                        self.logger.error(f"Failed to save violation frame: {e}")    
+            
         return result
 
     def stop(self):
