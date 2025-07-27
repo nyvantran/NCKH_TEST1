@@ -5,6 +5,7 @@ from collections import defaultdict, deque
 from scipy.optimize import linear_sum_assignment
 from BackEnd.core.BirdEyeViewTransform import BirdEyeViewTransform
 from BackEnd.common.DataClass import CameraConfig
+from BackEnd.config import dir_bevConfig
 
 
 class Track:
@@ -38,7 +39,7 @@ class PersonTracker:
         self.SOCIAL_DISTANCE_THRESHOLD = config.social_distance_threshold
         self.WARNING_DURATION = config.warning_duration
         self.bev_distance = BirdEyeViewTransform()
-        self.bev_distance.load_config_BEV(f"config/config_BEV_{camera_id}.json")
+        self.bev_distance.load_config_BEV(dir_bevConfig+f"config_BEV_{camera_id}.json")
         self.frame_count = 0
         self.current_fps = 30
         self.distance_history = defaultdict(lambda: deque(maxlen=int(self.current_fps * self.WARNING_DURATION * 1.5)))
