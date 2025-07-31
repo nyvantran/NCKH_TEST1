@@ -67,26 +67,14 @@ class BirdEyeViewTransform:
         if self.__hography_matrix is None:
             self.__hography_matrix = self.set_hography_matrix()
 
-        # Convert points to homogeneous coordinates
-        p1 = np.array([point1_px[0], point1_px[1], 1])
-        p2 = np.array([point2_px[0], point2_px[1], 1])
+        p1_px, p2_px = np.array(point1_px, dtype='float32'), np.array(point2_px, dtype='float32')
 
-        h_inv = np.linalg.inv(self.__hography_matrix)
-        # Apply the homography matrix
-        world_p1_homogeneous = self.__hography_matrix @ p1
-        world_p2_homogeneous = self.__hography_matrix @ p2
-        # world_p1_homogeneous = h_inv @ p1
-        # world_p2_homogeneous = h_inv @ p2
-
-        # Normalize to get real-world coordinates
-        world_p1 = (world_p1_homogeneous[0] / world_p1_homogeneous[2],
-                    world_p1_homogeneous[1] / world_p1_homogeneous[2])
-
-        world_p2 = (world_p2_homogeneous[0] / world_p2_homogeneous[2],
-                    world_p2_homogeneous[1] / world_p2_homogeneous[2])
-
-        # Calculate Euclidean distance
-        distance = cv2.norm(np.array(world_p1) - np.array(world_p2))
+        point_src_reshaped = np.array([[p1_px, p2_px]], dtype='float32')
+        point_dst_transformed = cv2.perspectiveTransform(point_src_reshaped, self.__hography_matrix)
+        # Trích xuất tọa độ từ kết quả
+        pdt1 = point_dst_transformed[0][0]
+        pdt2 = point_dst_transformed[0][1]
+        distance = cv2.norm(pdt1, pdt2)
         return distance
 
     def save_config_BEV(self, filename):
@@ -267,14 +255,29 @@ def draw_points(image, points, color=(0, 0, 255), radius=8, thickness=-1):
 def main():
     # Example usage
 
-    transformer = BirdEyeViewTransform()
-    # transformer.set_src_points_by_monitor("frame_21.jpg")  # Replace with your image path
-    w, h = np.array([5, 4]) * 0.4
-    target_corners = [[0, 0], [w, 0], [w, h], [0, h]]  # Define target corners
-    # transformer.set_hography_matrix(target_corners=target_corners)
-    # transformer.save_config_BEV('config_BEV_CAM0010.json')
-    transformer.load_config_BEV('config_BEV_CAM0010.json')
-    transformer.demo("frame_21.jpg")  # Replace with your image path
+    # transformer = BirdEyeViewTransform()
+    # # transformer.set_src_points_by_monitor("frame_21.jpg")  # Replace with your image path
+    # w, h = np.array([5, 4]) * 0.4
+    # target_corners = [[0, 0], [w, 0], [w, h], [0, h]]  # Define target corners
+    # # transformer.set_hography_matrix(target_corners=target_corners)
+    # # transformer.save_config_BEV('config_BEV_CAM0010.json')
+    # transformer.load_config_BEV('config_BEV_CAM0010.json')
+    # transformer.demo("frame_21.jpg")  # Replace with your image path
+
+    # point1_px, point2_px = (100, 150), (200, 250)  # ví dụ tọa độ 2 điểm
+    # p1_px, p2_px = np.array(point1_px, dtype='float32'), np.array(point2_px, dtype='float32')
+    # hography_matrix = np.array([[3.43724676e-02, 1.43550909e-02, -2.16796165e+01],
+    #                             [3.43285291e-04, 1.10537864e-01, -2.60488312e+01],
+    #                             [1.25993357e-04, 1.21887670e-02, 1.00000000e+00]])  # ví dụ ma trận homography
+    # point_src_reshaped = np.array([[p1_px, p2_px]], dtype='float32')  # chuyển đổi thành định dạng phù hợp
+    # point_dst_transformed = cv2.perspectiveTransform(point_src_reshaped, hography_matrix)  # áp dụng biến đổi phối cảnh
+    # Trích xuất tọa độ từ kết quả
+    # pdt1 = point_dst_transformed[0][0]  # tọa độ điểm 1 sau biến đổi
+    # pdt2 = point_dst_transformed[0][1]  # tọa độ điểm 2 sau biến đổi
+
+    pdt1 = np.array([100, 150], dtype='float32')  # ví dụ tọa độ điểm 1 sau biến đổi
+    pdt2 = np.array([200, 250], dtype='float32')  # ví dụ tọa độ điểm 2 sau biến đổi
+    distance = cv2.norm(pdt1, pdt2)  # khoảng cách giữa hai điểm
 
 
 if __name__ == "__main__":
