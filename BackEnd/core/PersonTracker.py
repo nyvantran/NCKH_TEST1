@@ -42,7 +42,7 @@ class PersonTracker:
         self.SOCIAL_DISTANCE_THRESHOLD = config.social_distance_threshold
         self.WARNING_DURATION = config.warning_duration
         self.bev_distance = BirdEyeViewTransform()
-        self.bev_distance.load_config_BEV(dir_bevConfig+f"config_BEV_{camera_id}.json")
+        self.bev_distance.load_config_BEV(dir_bevConfig + f"config_BEV_{camera_id}.json")
         self.frame_count = 0
         self.current_fps = 30
         self.distance_history = defaultdict(lambda: deque(maxlen=int(self.current_fps * self.WARNING_DURATION * 1.5)))
@@ -54,7 +54,7 @@ class PersonTracker:
         xy_leg1 = (center1[0], center1[1] + height1 / 2)
         xy_leg2 = (center2[0], center2[1] + height2 / 2)
         return self.bev_distance.calculate_distance(xy_leg1, xy_leg2)
-    
+
     def get_statistics(self):
         """Get current statistics"""
         active_tracks = sum(1 for track in self.tracks.values() if track.disappeared == 0)
@@ -63,6 +63,7 @@ class PersonTracker:
             'total_tracks': len(self.tracks),
             'violations': len(self.warned_pairs)
         }
+
     def update_tracks(self, detections):
         active_track_ids = list(self.tracks.keys())
         if not detections:
@@ -135,8 +136,14 @@ class PersonTracker:
 
         for (id1, id2), distance in close_pairs_info:
             track1, track2 = self.tracks[id1], self.tracks[id2]
-            cv2.line(frame, track1.center, track2.center, (0, 0, 255), 2)
-            mid_point = ((track1.center[0] + track2.center[0]) // 2, (track1.center[1] + track2.center[1]) // 2)
+            leg1 = (track1.center[0], track1.center[1] + track1.height_pixels // 2)
+            leg2 = (track2.center[0], track2.center[1] + track2.height_pixels // 2)
+            # cv2.line(frame, track1.center, track2.center, (0, 0, 255), 2)
+            cv2.circle(frame, leg1, 5, (0, 0, 255), -1)
+            cv2.circle(frame, leg2, 5, (0, 0, 255), -1)
+            cv2.line(frame, leg1, leg2, (0, 0, 255), 2)
+            # mid_point = ((track1.center[0] + track2.center[0]) // 2, (track1.center[1] + track2.center[1]) // 2)
+            mid_point = ((leg1[0] + leg2[0]) // 2, (leg1[1] + leg2[1]) // 2)
             cv2.putText(frame, f'{distance:.1f}m', mid_point, cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 255), 2)
 
         return newly_warned_pairs_data
