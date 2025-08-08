@@ -255,14 +255,14 @@ def draw_points(image, points, color=(0, 0, 255), radius=8, thickness=-1):
 def main():
     # Example usage
 
-    # transformer = BirdEyeViewTransform()
+    transformer = BirdEyeViewTransform()
     # # transformer.set_src_points_by_monitor("frame_21.jpg")  # Replace with your image path
     # w, h = np.array([5, 4]) * 0.4
     # target_corners = [[0, 0], [w, 0], [w, h], [0, h]]  # Define target corners
     # # transformer.set_hography_matrix(target_corners=target_corners)
     # # transformer.save_config_BEV('config_BEV_CAM0010.json')
-    # transformer.load_config_BEV('config_BEV_CAM0010.json')
-    # transformer.demo("frame_21.jpg")  # Replace with your image path
+    transformer.load_config_BEV(r'D:\Project\NCKH\NCKH_TEST1\config\config_BEV_CAM001.json')
+    transformer.demo("frame_21.jpg")  # Replace with your image path
 
     # point1_px, point2_px = (100, 150), (200, 250)  # ví dụ tọa độ 2 điểm
     # p1_px, p2_px = np.array(point1_px, dtype='float32'), np.array(point2_px, dtype='float32')
@@ -275,9 +275,9 @@ def main():
     # pdt1 = point_dst_transformed[0][0]  # tọa độ điểm 1 sau biến đổi
     # pdt2 = point_dst_transformed[0][1]  # tọa độ điểm 2 sau biến đổi
 
-    pdt1 = np.array([100, 150], dtype='float32')  # ví dụ tọa độ điểm 1 sau biến đổi
-    pdt2 = np.array([200, 250], dtype='float32')  # ví dụ tọa độ điểm 2 sau biến đổi
-    distance = cv2.norm(pdt1, pdt2)  # khoảng cách giữa hai điểm
+    # pdt1 = np.array([100, 150], dtype='float32')  # ví dụ tọa độ điểm 1 sau biến đổi
+    # pdt2 = np.array([200, 250], dtype='float32')  # ví dụ tọa độ điểm 2 sau biến đổi
+    # distance = cv2.norm(pdt1, pdt2)  # khoảng cách giữa hai điểm
 
 
 if __name__ == "__main__":
