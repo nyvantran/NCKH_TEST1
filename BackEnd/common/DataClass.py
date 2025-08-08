@@ -2,6 +2,7 @@ import numpy as np
 from dataclasses import dataclass
 from typing import Dict, List, Tuple
 
+
 @dataclass
 class FrameBatch:
     camera_frames: Dict[str, np.ndarray]
@@ -27,6 +28,7 @@ class DetectionResult:
     close_pairs: List[Tuple[int, int, float]]
     frame: np.ndarray = None
 
+
 @dataclass
 class CameraConfig:
     camera_id: str
@@ -38,3 +40,5 @@ class CameraConfig:
     social_distance_threshold: float = 2.0
     warning_duration: float = 1.0
     loop_video: bool = True
+    frame_height: int = 480
+    frame_width: int = 640
