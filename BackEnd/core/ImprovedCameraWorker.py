@@ -66,6 +66,10 @@ class ImprovedCameraWorker(threading.Thread):
             if isinstance(source, str) and source.isdigit(): source = int(source)
             self.cap = cv2.VideoCapture(source)
             if self.cap.isOpened():
+                self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, self.config.frame_height)
+                self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, self.config.frame_width)
+                print(
+                    f"Opening source {self.config.source} with resolution {self.cap.get(cv2.CAP_PROP_FRAME_WIDTH)}x{self.cap.get(cv2.CAP_PROP_FRAME_HEIGHT)}")
                 fps = self.cap.get(cv2.CAP_PROP_FPS)
                 self.tracker.current_fps = max(fps, 1) if fps > 0 else 30
                 self.logger.info(f"Source {self.config.source} opened. FPS: {self.tracker.current_fps}")
@@ -88,6 +92,22 @@ class ImprovedCameraWorker(threading.Thread):
             close_pairs=newly_warned_pairs,
             frame=frame
         )
+        file_name = datetime.now().strftime("%d-%m-%Y %H-%M-%S" + ".jpg")
+        # Lưu khung hình hiện tại (frame) vào biến image
+        if newly_warned_pairs:
+            print(f"Camera {self.config.camera_id} detected {len(self.tracker.warned_pairs)} violations.")
+            for (id1, id2) in self.tracker.warned_pairs:
+                self.db_manager.log_event(self.config.camera_id, "violation", id1, id2, file_name)
+
+            save_dir = os.path.join(config.dir_capture)
+            if save_dir:
+                os.makedirs(save_dir, exist_ok=True)
+                save_path = os.path.join(save_dir, file_name)
+                try:
+                    cv2.imwrite(save_path, frame)
+                    self.logger.info(f"Saved violation frame to {save_path}")
+                except Exception as e:
+                    self.logger.error(f"Failed to save violation frame: {e}")
 
         if self.frame_count % 300 == 0:
             stats = self.tracker.get_statistics()
@@ -97,22 +117,6 @@ class ImprovedCameraWorker(threading.Thread):
                 stats['active_tracks'],  # Số lượng track tại khung hình hiện tại phát hiện được
                 stats['violations']  # Số lượng cặp đối tượng vi phạm khoảng cách
             )
-            file_name = datetime.now().strftime("%d-%m-%Y %H-%M-%S" + ".jpg")
-            # Lưu khung hình hiện tại (frame) vào biến image
-            if self.tracker.warned_pairs:
-                print(f"Camera {self.config.camera_id} detected {len(self.tracker.warned_pairs)} violations.")
-                for (id1, id2) in self.tracker.warned_pairs:
-                    self.db_manager.log_event(self.config.camera_id, "violation", id1, id2, file_name)
-
-                save_dir = os.path.join(config.dir_capture)
-                if save_dir:
-                    os.makedirs(save_dir, exist_ok=True)
-                    save_path = os.path.join(save_dir, file_name)
-                    try:
-                        cv2.imwrite(save_path, frame)
-                        self.logger.info(f"Saved violation frame to {save_path}")
-                    except Exception as e:
-                        self.logger.error(f"Failed to save violation frame: {e}")
 
         return result
 
