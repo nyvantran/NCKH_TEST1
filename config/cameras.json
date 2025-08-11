@@ -1,9 +1,9 @@
 {
   "cameras": [
     {
-      "camera_id": "CAM001",
-      "source": "D:\\Project\\NCKH\\dataset\\test.mp4",
-      "position": "Position_1",
+      "camera_id": "CAM002",
+      "source": "0",
+      "position": "Position_2",
       "enable_recording": true,
       "recording_path": "./recordings",
       "confidence_threshold": 0.4,

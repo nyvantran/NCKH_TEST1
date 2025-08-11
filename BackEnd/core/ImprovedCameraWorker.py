@@ -68,6 +68,8 @@ class ImprovedCameraWorker(threading.Thread):
             if self.cap.isOpened():
                 self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, self.config.frame_height)
                 self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, self.config.frame_width)
+                print(
+                    f"Opening source {self.config.source} with resolution {self.cap.get(cv2.CAP_PROP_FRAME_WIDTH)}x{self.cap.get(cv2.CAP_PROP_FRAME_HEIGHT)}")
                 fps = self.cap.get(cv2.CAP_PROP_FPS)
                 self.tracker.current_fps = max(fps, 1) if fps > 0 else 30
                 self.logger.info(f"Source {self.config.source} opened. FPS: {self.tracker.current_fps}")

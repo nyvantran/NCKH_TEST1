@@ -195,8 +195,6 @@ class BirdEyeViewTransform:
                 raise FileNotFoundError(f"Không thể mở video hoặc ảnh: {config['source']}")
             cap.set(cv2.CAP_PROP_FRAME_WIDTH, config['frame_width'])
             cap.set(cv2.CAP_PROP_FRAME_HEIGHT, config['frame_height'])
-            print(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
-            print(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
             ret, image = cap.read()
             if image is None:
                 raise FileNotFoundError(f"Không tìm thấy file ảnh: {config['source']}")
@@ -246,7 +244,7 @@ class BirdEyeViewTransform:
                     print("Vui lòng chọn đủ 4 điểm trước khi lưu.")
         cv2.destroyAllWindows()
 
-    def draw_points(selt, image, points, color=(0, 0, 255), radius=8, thickness=-1):
+    def draw_points(selt, image, points, color=(0, 225, 0), radius=8, thickness=-1):
         """
         Draws points on the image.
         Args:
