@@ -2,7 +2,7 @@
   "cameras": [
     {
       "camera_id": "CAM002",
-      "source": "0",
+      "source": "1",
       "position": "Position_2",
       "enable_recording": true,
       "recording_path": "./recordings",

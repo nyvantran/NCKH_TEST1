@@ -58,7 +58,6 @@ opencv-python==4.8.0.74
 numpy==1.24.3
 pandas==2.0.2
 Pillow==9.5.0
-sẽ sửa lại 
 ```
 
 ## 🎯 Cách sử dụng
@@ -67,8 +66,6 @@ sẽ sửa lại
 
 ```bash
 python main.py
-#sẽ sửa lại
-
 ```
 
 ### 2. Chức năng 1
@@ -93,7 +90,7 @@ python main.py
 ## 📁 Cấu trúc project
 
 ```
-D:.
+NCKH_YOLOv5_social_distancing
 │   .gitignore
 │   main.py
 │   README.md
@@ -140,6 +137,7 @@ D:.
 ## 🔧 Cấu hình
 
 ### Cấu hình camera
+
 - **cameras**: là cấu hình của các camera trong hệ thống
   - **camera_id**: là id của camera, định dạng là CAM001, CAM002, ...
   - **source**: là đường dẫn đến camera hoặc video, có thể là `0` cho camera mặc định hoặc đường dẫn đến file video
@@ -152,7 +150,7 @@ D:.
   - **loop_video**: có lặp lại video hay không, giá trị là `true` hoặc `false`
   - **frame_height**: là chiều cao của khung hình, tính bằng pixel
   - **frame_width**: là chiều rộng của khung hình, tính bằng pixel
-  
+
 ```json
 {
   "cameras": [
@@ -174,19 +172,20 @@ D:.
 ```
 
 ### Cấu hình BEV Transform
-cấu hình BEV Transform (từ từ làm)
+
+khởi chạy file /BackEnd/core/BirdEyeViewTransform.py cách config là chọn 4 điểm trên ảnh và tọa độ 4 điểm trên thực
+tế. [video hướng dẫn config BEV](/video_demo_config.mp4)
+
 ```bash
-## Độ chính xác nhận diện (0.0 - 1,44)
-#FACE_RECOGNITION_TOLERANCE = 0.85
-#
-## Kích thước ảnh xử lý
-#FACE_IMAGE_SIZE = (112, 112)
+python /BackEnd/core/BirdEyeViewTransform.py
 ```
 
-## 📊 Tính năng 1
+[//]: # (## 📊 Tính năng 1)
 
-- **Nhận diện nhiều khuôn mặt**: Có thể nhận diện đồng thời nhiều sinh viên
-- **Chống gian lận**: Phát hiện ảnh giả, video replay (đang tích hợp)
+[//]: # ()
+[//]: # (- **Nhận diện nhiều khuôn mặt**: Có thể nhận diện đồng thời nhiều sinh viên)
+
+[//]: # (- **Chống gian lận**: Phát hiện ảnh giả, video replay &#40;đang tích hợp&#41;)
 
 ## 🐛 Troubleshooting
 
@@ -206,17 +205,22 @@ python -c "import cv2; print(cv2.VideoCapture(0).isOpened())"
 ### Lỗi nhận diện kém
 
 - Kiểm tra ánh sáng
-- Điều chỉnh THRESHOLD
+- Điều chỉnh confidence_threshold
 
 ## 📈 Roadmap
 
-## 🤝 Đóng góp
+[//]: # (## 🤝 Đóng góp)
 
-1. Fork dự án
-2. Tạo branch tính năng (`git checkout -b feature/AmazingFeature`)
-3. Commit thay đổi (`git commit -m 'Add some AmazingFeature'`)
-4. Push lên branch (`git push origin feature/AmazingFeature`)
-5. Tạo Pull Request
+[//]: # ()
+[//]: # (1. Fork dự án)
+
+[//]: # (2. Tạo branch tính năng &#40;`git checkout -b feature/AmazingFeature`&#41;)
+
+[//]: # (3. Commit thay đổi &#40;`git commit -m 'Add some AmazingFeature'`&#41;)
+
+[//]: # (4. Push lên branch &#40;`git push origin feature/AmazingFeature`&#41;)
+
+[//]: # (5. Tạo Pull Request)
 
 ## 📄 License
 
@@ -229,6 +233,7 @@ Distributed under the MIT License. See `LICENSE` for more information.
 ## 📞 Liên hệ
 
 [//]: # ()
+
 [//]: # (- Email: namkuner@gmail.com)
 
 [//]: # (- GitHub: [@namkuner]&#40;https://github.com/namkuner&#41;)
