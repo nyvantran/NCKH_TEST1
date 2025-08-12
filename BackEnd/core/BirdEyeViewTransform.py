@@ -413,7 +413,7 @@ class BirdEyeViewTransform:
 def main():
     # Example usage
     import os
-    config_dir = r"..\..\config"  # replace with your config file path
+    config_dir = r"config"  # replace with your config file path
     config = json.load(open(os.path.join(config_dir, "cameras.json"), "r"))  # replace with your config file path
     config = config.get("cameras")
     for i, camera in enumerate(config):

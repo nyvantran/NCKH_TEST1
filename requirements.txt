@@ -1,6 +1,12 @@
+--extra-index-url https://download.pytorch.org/whl/cu118
+
 numpy==1.26.4
-opencv_python_headless==4.10.0.82
+opencv-python-headless==4.10.0.82
 PyQt5==5.15.11
-PyQt5_sip==12.17.0
+PyQt5-sip==12.17.0
 scipy==1.16.1
-torch==2.6.0+cu118
+torch==2.7.1
+torchvision==0.22.1
+torchaudio==2.7.1
+ultralytics==8.3.177
+seaborn==0.13.2

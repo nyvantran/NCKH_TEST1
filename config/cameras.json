@@ -2,7 +2,7 @@
   "cameras": [
     {
       "camera_id": "CAM001",
-      "source": "D:\\Project\\NCKH\\dataset\\test.mp4",
+      "source": "video\\videotest.mp4",
       "position": "Position_1",
       "enable_recording": true,
       "recording_path": "./recordings",
