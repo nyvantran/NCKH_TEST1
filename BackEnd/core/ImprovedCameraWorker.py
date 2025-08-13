@@ -46,6 +46,7 @@ class ImprovedCameraWorker(threading.Thread):
                 if self.is_video_file and self.config.loop_video:
                     self.logger.info(f"Restarting video file for {self.config.camera_id}.")
                     self.cap.set(cv2.CAP_PROP_POS_FRAMES, 0)
+                    self.cap.release()
                     continue
                 else:
                     self.logger.info(f"End of video or stream error for {self.config.camera_id}.")

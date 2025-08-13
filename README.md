@@ -1,4 +1,4 @@
-# NCKH_TEST1
+# # NCKH_YOLOv5_social_distancing
 
 ## 📋 Mô tả dự án
 
@@ -95,7 +95,7 @@ khởi chạy file /BackEnd/core/BirdEyeViewTransform.py cách config là chọn
 tế. [video hướng dẫn config BEV](video/video_demo_config_BEV.mp4)
 
 ```bash
-python /BackEnd/core/BirdEyeViewTransform.py
+python BackEnd/core/BirdEyeViewTransform.py
 ```
 
 [//]: # (## 📊 Tính năng 1)
@@ -152,6 +152,7 @@ NCKH_YOLOv5_social_distancing
 │   .gitignore
 │   main.py
 │   README.md
+│   requirements.txt
 │   surveillance.db
 │   yolov5m.pt
 │
@@ -160,7 +161,7 @@ NCKH_YOLOv5_social_distancing
 │   │   MultiCameraSurveillanceSystem.py
 │   │
 │   ├───common
-│   │       DataClass.py
+│   │       DataClass.py   
 │   │
 │   ├───core
 │   │       BatchProcessor.py
@@ -169,15 +170,19 @@ NCKH_YOLOv5_social_distancing
 │   │       PersonTracker.py
 │   │   
 │   └───data
-│           DatabaseManager.py
+│       │   DatabaseManager.py
+│       │
+│       └───__pycache__
+│               DatabaseManager.cpython-312.pyc
 │   
-├───capture      
+│
+├───capture
 │       27-07-2025 10-03-16.jpg
 │       27-07-2025 10-03-42.jpg
 │       27-07-2025 10-03-57.jpg
 │       27-07-2025 10-04-11.jpg
 │       27-07-2025 10-04-22.jpg
-│    
+│
 ├───config
 │       cameras.json
 │       config_BEV_CAM001.json
@@ -185,11 +190,12 @@ NCKH_YOLOv5_social_distancing
 │       config_BEV_CAM003.json
 │       config_BEV_CAM004.json
 │
-└───FontEnd
-        gui_app.py
-    
-
-
+├───FontEnd
+│       gui_app.py
+│
+└───video
+        videotest.mp4
+        video_demo_config_BEV.mp4
 ```
 
 ## 🔧 Cấu hình
