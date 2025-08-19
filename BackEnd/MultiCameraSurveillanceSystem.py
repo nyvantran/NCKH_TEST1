@@ -7,6 +7,7 @@ from datetime import datetime
 from PyQt5.QtCore import QObject, pyqtSignal
 from BackEnd.core.ImprovedCameraWorker import ImprovedCameraWorker
 from BackEnd.core.BatchProcessor import BatchProcessor
+from BackEnd.core.TextToSpeech import TextToSpeech
 from BackEnd.data.DatabaseManager import DatabaseManager
 from BackEnd.common.DataClass import CameraConfig
 
@@ -28,6 +29,7 @@ class MultiCameraSurveillanceSystem(QObject):
         self.logger = logging.getLogger("SurveillanceSystem")
         self.batch_processor = BatchProcessor(batch_size=self.batch_size)
         self.load_config()
+        self.text_to_speech = TextToSpeech(voice="vi-VN-NamMinhNeural", rate="+50%", pitch="+50Hz")
 
     def load_config(self):
         try:
@@ -63,7 +65,7 @@ class MultiCameraSurveillanceSystem(QObject):
                 if batch_result is None:
                     time.sleep(0.005)
                     continue
-                
+
                 for camera_id, detections in batch_result.camera_results.items():
                     worker = self.camera_workers.get(camera_id)
                     if worker and worker.is_active:
@@ -72,6 +74,8 @@ class MultiCameraSurveillanceSystem(QObject):
                             result = worker.process_detections(detections, frame)
                             self.new_frame_ready.emit(camera_id, result.frame)
                             for id1, id2, distance, closetime in result.close_pairs:
+                                text = f"{camera_id} có vi phạm khoảng cách"
+                                self.text_to_speech.play(text, load=f"Backend/audio/{camera_id}_violation.mp3")
                                 timestamp_str = datetime.now().strftime("%H:%M:%S")
                                 self.violation_detected.emit(camera_id, id1, id2, distance, timestamp_str, closetime)
             except Exception as e:
@@ -88,5 +92,6 @@ class MultiCameraSurveillanceSystem(QObject):
         for worker in self.camera_workers.values():
             if worker.is_alive():
                 worker.join(timeout=2.0)
+        self.text_to_speech.stop()
         self.logger.info("Surveillance system stopped.")
         self.system_stopped.emit()
