@@ -4,16 +4,16 @@
 
 Dự án NCKH_YOLOv5_social_distancing là một hệ thống giám sát đa camera sử dụng công nghệ YOLOv5 để phát hiện và theo dõi
 người trong các khu vực công cộng,nhằm đảm bảo tuân thủ khoảng cách xã hội.
-Hệ thống này sửa dung Bird eye view transform để đo khoảng cách của mỗi người trong camera với sai số khoảng ± 5%.
-Hệ thống bao gồm nhiều camera được cấu hình để phát hiện người và ghi lại hình ảnh cảnh báo khi có vi phạm về khoảng
-cách xã hội.
+Hệ thống này sửa dụng Bird eye view transform để đo khoảng cách của mỗi người trong camera với sai số khoảng ± 5%.
+Hệ thống bao gồm nhiều camera được cấu hình để phát hiện người, phát âm thanh cảnh báo và ghi lại hình ảnh cảnh báo khi
+có vi phạm về khoảng cách xã hội.
 
 ## ✨ Tính năng chính
 
 - **Phát hiện con người**: sử dụng camera phát hiện con người.
 - **Đo khoảng cách giữa 2 người**: Đo khoảng cách mỗi người trong camera.
-- **Cảnh báo vi phạm khoảng cách xã hội**: khi khoảng cách giữa 2 người nhỏ hơn ngưỡng cho phép, hệ thống sẽ cảnh báo,
-  lưu cảnh báo vào database và ghi hình ảnh cảnh báo.
+- **Cảnh báo vi phạm khoảng cách xã hội**: khi khoảng cách giữa 2 người nhỏ hơn ngưỡng cho phép, hệ thống sẽ cảnh báo
+  bằng âm thanh và hiển thị thông báo trên giao diện người dùng. Lưu cảnh báo vào database và ghi hình ảnh cảnh báo.
 
 ## 🚀 Công nghệ sử dụng
 
@@ -23,14 +23,29 @@ cách xã hội.
 - **Thư viện chạy model AI**: PyTorch
 - **Mô hình phát hiện đối tượng**: YOLOv5m
 - **Cơ sở dữ liệu**: SQLite
+- **Phát âm thanh cảnh báo**: ffplay (một phần của FFmpeg của hệ điều hành)
 
 ## 📦 Cài đặt
 
 ### Yêu cầu hệ thống
 
 - Python version 3.12 trở lên
-- DeskTop có kết nối tới camera
+- DeskTop có kết nối tới camera, loa
 - Windows/macOS/Linux
+
+### Cài đặt FFmpeg
+
+chạy lệnh sau để cài đặt FFmpeg
+
+```bash
+# Windows 
+winget install "FFmpeg (Essentials Build)"
+# macOS
+brew install ffmpeg
+# Linux
+sudo apt update
+sudo apt install ffmpeg
+```
 
 ### Cài đặt dependencies
 
@@ -160,6 +175,9 @@ NCKH_YOLOv5_social_distancing
 │   │   config.py
 │   │   MultiCameraSurveillanceSystem.py
 │   │
+│   ├───audio
+│   │       CAM001_violation.mp3
+│   │       
 │   ├───common
 │   │       DataClass.py   
 │   │
@@ -170,11 +188,7 @@ NCKH_YOLOv5_social_distancing
 │   │       PersonTracker.py
 │   │   
 │   └───data
-│       │   DatabaseManager.py
-│       │
-│       └───__pycache__
-│               DatabaseManager.cpython-312.pyc
-│   
+│           DatabaseManager.py          
 │
 ├───capture
 │       27-07-2025 10-03-16.jpg
