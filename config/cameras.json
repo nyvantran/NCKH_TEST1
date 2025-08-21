@@ -2,13 +2,13 @@
   "cameras": [
     {
       "camera_id": "CAM001",
-      "source": "D:\\Project\\NCKH\\NCKH_TEST1\\video\\videotest.mp4",
+      "source": "D:\\Project\\NCKH\\NCKH_YOLOv5_social_distancing\\video\\videotest.mp4",
       "position": "Position_1",
       "enable_recording": true,
       "recording_path": "./recordings",
       "confidence_threshold": 0.4,
       "social_distance_threshold": 2,
-      "warning_duration": 30,
+      "warning_duration": 1,
       "frame_height": 720,
       "frame_width": 1280
     }
